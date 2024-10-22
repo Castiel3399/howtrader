@@ -51,11 +51,11 @@ from howtrader.api.websocket import WebsocketClient
 from howtrader.trader.constant import LOCAL_TZ
 from howtrader.trader.setting import SETTINGS
 # rest api host for inverse future
-D_REST_HOST: str = "https://dapi.binance.com"
+D_REST_HOST: str = "https://dapi.binance.us"
 
 # ws api host
-D_WEBSOCKET_TRADE_HOST: str = "wss://dstream.binance.com/ws/"
-D_WEBSOCKET_DATA_HOST: str = "wss://dstream.binance.com/stream"
+D_WEBSOCKET_TRADE_HOST: str = "wss://dstream.binance.us/ws/"
+D_WEBSOCKET_DATA_HOST: str = "wss://dstream.binance.us/stream"
 
 # Order status map
 STATUS_BINANCES2VT: Dict[str, Status] = {

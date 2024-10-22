@@ -2,6 +2,9 @@ import logging
 from logging import Logger
 import smtplib
 import os
+import asyncio
+import telegram
+
 from abc import ABC
 from pathlib import Path
 from datetime import datetime
@@ -663,6 +666,112 @@ class EmailEngine(BaseEngine):
                         SETTINGS["email.username"], SETTINGS["email.password"]
                     )
                     smtp.send_message(msg)
+            except Empty:
+                pass
+
+    def start(self) -> None:
+        """"""
+        self.active = True
+        self.thread.start()
+
+    def close(self) -> None:
+        """"""
+        if not self.active:
+            return
+
+        self.active = False
+        self.thread.join()
+class DingEngine(BaseEngine):
+    """
+    Provides dingding sending function.
+    """
+
+    def __init__(self, main_engine: MainEngine, event_engine: EventEngine) -> None:
+        """
+
+        :param main_engine:
+        :param event_engine:
+        """
+        super(DingEngine, self).__init__(main_engine, event_engine, "ding")
+
+        self.thread: Thread = Thread(target=self.run)
+        self.queue: Queue = Queue()
+        self.active: bool = False
+
+        self.main_engine.send_ding = self.send_ding
+
+    def send_ding(self, content: str) -> None:
+        """"""
+        # Start ding engine when sending first ding.
+        if not self.active:
+            self.start()
+
+        msg: str = content
+
+        self.queue.put(msg)
+
+    def run(self) -> None:
+        """"""
+        while self.active:
+            try:
+                msg: str = self.queue.get(block=True, timeout=1)
+
+                with smtplib.SMTP_SSL(
+                    SETTINGS["ding.server"], SETTINGS["ding.port"]
+                ) as smtp:
+                    smtp.login(
+                        SETTINGS["ding.username"], SETTINGS["ding.password"]
+                    )
+                    smtp.send_message(msg)
+            except Empty:
+                pass
+
+    def start(self) -> None:
+        """"""
+        self.active = True
+        self.thread.start()
+
+    def close(self) -> None:
+        """"""
+        if not self.active:
+            return
+
+        self.active = False
+        self.thread.join()
+
+class TelegramEngine(BaseEngine):
+    """
+    Provides telegram sending function.
+    """
+
+    def __init__(self, main_engine: MainEngine, event_engine: EventEngine) -> None:
+        """"""
+        super(TelegramEngine, self).__init__(main_engine, event_engine, "telegram")
+
+        self.thread: Thread = Thread(target=self.run)
+        self.queue: Queue = Queue()
+        self.active: bool = False
+
+        self.main_engine.send_telegram = self.send_telegram
+
+    async def send_telegram(self, content: str) -> None:
+        """"""
+        # Start telegram engine when sending first telegram.
+        if not self.active:
+            self.start()
+
+        msg: str = content
+
+        self.queue.put(msg)
+
+    def run(self) -> None:
+        """"""
+        bot = telegram.Bot(token=SETTINGS["telegram.token"])
+
+        while self.active:
+            try:
+                msg: str = self.queue.get(block=True, timeout=1)
+                bot.send_message(chat_id=SETTINGS["telegram.chat_id"], text=msg)
             except Empty:
                 pass
 

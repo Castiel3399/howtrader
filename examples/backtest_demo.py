@@ -8,8 +8,8 @@ engine = BacktestingEngine()
 engine.set_parameters(
     vt_symbol="BTCUSDT.BINANCE",
     interval=Interval.MINUTE,
-    start=datetime(2020, 1, 1),
-    end=datetime(2020, 5, 1),
+    start=datetime(2022, 1, 1),
+    end=datetime(2022, 5, 1),
     rate=4/10000,
     slippage=0,
     size=1,

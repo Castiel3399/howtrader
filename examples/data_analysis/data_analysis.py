@@ -11,7 +11,7 @@ from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import talib
 
 from howtrader.trader.constant import Exchange, Interval
-from howtrader.trader.database import database_manager
+from howtrader.trader.database import database
 warnings.filterwarnings("ignore")
 
 
@@ -70,7 +70,7 @@ class DataAnalysis:
         self.index_4to1 = index_4to1
 
         # Load history data from database
-        bars = database_manager.load_bar_data(
+        bars = database.load_bar_data(
             symbol=symbol,
             exchange=exchange,
             interval=interval,

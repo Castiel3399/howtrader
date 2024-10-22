@@ -49,6 +49,7 @@ class AtrRsi15MinStrategy(CtaTemplate):
     def __init__(self, cta_engine, strategy_name, vt_symbol, setting):
         """"""
         super().__init__(cta_engine, strategy_name, vt_symbol, setting)
+        self.symbols = None
         self.bg = BarGenerator(self.on_bar, 15, self.on_15min_bar)
         self.am = ArrayManager()
 
@@ -86,6 +87,50 @@ class AtrRsi15MinStrategy(CtaTemplate):
         Callback of new bar data update.
         """
         self.bg.update_bar(bar)
+
+    # on_60min_bar 订阅多键值对行情,推送并交易
+    def on_60min_bar(self, bar: BarData):
+        self.cancel_all()
+
+        for symbol in self.symbols:
+            am = self.array_managers[symbol]
+            am.update_bar(bar)
+            if not am.inited:
+                continue
+
+            atr_array = am.atr(self.atr_length, array=True)
+            self.atr_value = atr_array[-1]
+            self.atr_ma = atr_array[-self.atr_ma_length:].mean()
+            self.rsi_value = am.rsi(self.rsi_length)
+
+            if self.pos == 0:
+                self.intra_trade_high = bar.high_price
+                self.intra_trade_low = bar.low_price
+
+                if self.atr_value > self.atr_ma:
+                    if self.rsi_value > self.rsi_buy:
+                        price = bar.close_price * 1.01
+                        self.buy(Decimal(price), Decimal(self.fixed_size))
+                    elif self.rsi_value < self.rsi_sell:
+                        price = bar.close_price * 0.99
+                        self.short(Decimal(price), Decimal(self.fixed_size))
+
+            elif self.pos > 0:
+                self.intra_trade_high = max(self.intra_trade_high, bar.high_price)
+                self.intra_trade_low = bar.low_price
+                long_stop = self.intra_trade_high * (1 - self.trailing_percent / 100)
+                self.sell(Decimal(long_stop), Decimal(abs(self.pos)), stop=True)
+
+            elif self.pos < 0:
+                self.intra_trade_low = min(self.intra_trade_low, bar.low_price)
+                self.intra_trade_high = bar.high_price
+                short_stop = self.intra_trade_low * (1 + self.trailing_percent / 100)
+                self.cover(Decimal(short_stop), Decimal(abs(self.pos)), stop=True)
+
+        self.put_event()
+
+
+
 
     def on_15min_bar(self, bar: BarData):
         self.cancel_all()

@@ -377,19 +377,19 @@ def get_binance_data(symbol: str, exchange: str, start_time: str, end_time: str)
         limit = BINANCE_SPOT_LIMIT
         save_symbol = symbol.lower()
         gateway = 'BINANCE_SPOT'
-        api_url = f'https://api.binance.com/api/v3/klines?symbol={symbol}&interval=1m&limit={limit}'
+        api_url = f'https://api.binance.us/api/v3/klines?symbol={symbol}&interval=1m&limit={limit}'
 
     elif exchange == 'usdt_future':
         print('usdt_future')
         limit = BINANCE_FUTURE_LIMIT
         gateway = "BINANCE_USDT"
-        api_url = f'https://fapi.binance.com/fapi/v1/klines?symbol={symbol}&interval=1m&limit={limit}'
+        api_url = f'https://fapi.binance.us/fapi/v1/klines?symbol={symbol}&interval=1m&limit={limit}'
 
     elif exchange == 'inverse_future':
         print("inverse_future")
         limit = BINANCE_FUTURE_LIMIT
         gateway = "BINANCE_INVERSE"
-        f'https://dapi.binance.com/dapi/v1/klines?symbol={symbol}&interval=1m&limit={limit}'
+        f'https://dapi.binance.us/dapi/v1/klines?symbol={symbol}&interval=1m&limit={limit}'
 
     else:
         raise Exception('the exchange name should be one of ：spot, usdt_future, inverse_future')
@@ -528,9 +528,9 @@ if __name__ == '__main__':
     """
 
     # proxy_host , if you can directly connect to the binance exchange, then set it to None or empty string ""，如果没有你就设置为 None 或者空的字符串 "",
-    # you can use the command  ping api.binance.com to check whether your network work well: 你可以在终端运行 ping api.binance.com 查看你的网络是否正常。
+    # you can use the command  ping api.binance.us to check whether your network work well: 你可以在终端运行 ping api.binance.us 查看你的网络是否正常。
     proxy_host = "127.0.0.1"  # set it to your proxy_host 如果没有就设置为"", 如果有就设置为你的代理主机如：127.0.0.1
-    proxy_port = 1087  # set it to your proxy_port  设置你的代理端口号如: 1087, 没有你修改为0,但是要保证你能访问api.binance.com这个主机。
+    proxy_port = 1087  # set it to your proxy_port  设置你的代理端口号如: 1087, 没有你修改为0,但是要保证你能访问api.binance.us这个主机。
 
     proxies = None
     if proxy_host and proxy_port:

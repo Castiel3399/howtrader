@@ -42,7 +42,11 @@ SETTINGS: Dict[str, Any] = {
     "database.host": "",
     "database.port": 0,
     "database.user": "",
-    "database.password": ""
+    "database.password": "",
+
+    #Telegram bot token
+    "telegram.token": "7382685061:AAFfWDFXD6GYak5MmhEEohqwi5IWpclsUvs",
+    "telegram.chat_id": 1176326184
 }
 
 # Load global setting from json file.

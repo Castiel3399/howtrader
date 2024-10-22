@@ -44,11 +44,11 @@ from howtrader.trader.constant import LOCAL_TZ
 from howtrader.trader.setting import SETTINGS
 
 # REST API HOST
-REST_HOST: str = "https://api.binance.com"
+REST_HOST: str = "https://api.binance.us"
 
 # Websocket API HOST
-WEBSOCKET_TRADE_HOST: str = "wss://stream.binance.com:9443/ws/"
-WEBSOCKET_DATA_HOST: str = "wss://stream.binance.com:9443/stream"
+WEBSOCKET_TRADE_HOST: str = "wss://stream.binance.us:9443/ws/"
+WEBSOCKET_DATA_HOST: str = "wss://stream.binance.us:9443/stream"
 
 
 # order status mapping
@@ -81,7 +81,7 @@ INTERVAL_VT2BINANCE: Dict[Interval, str] = {
     Interval.MINUTE: "1m",
     Interval.MINUTE_3: "3m",
     Interval.MINUTE_5: "5m",
-    Interval.MINUTE_15: "15",
+    Interval.MINUTE_15: "15m",
     Interval.MINUTE_30: "30m",
     Interval.HOUR: "1h",
     Interval.HOUR_2: "2h",

@@ -85,11 +85,10 @@ DIRECTION_VT2OKX: Dict[Direction, str] = {v: k for k, v in DIRECTION_OKX2VT.item
 # interval/timeframe mapping.
 INTERVAL_VT2OKX: Dict[Interval, str] = {
     Interval.MINUTE: "1m",
-    Interval.MINUTE_15: "15m",
     Interval.HOUR: "1H",
     Interval.DAILY: "1D",
 }
-
+#
 # product mapping.
 PRODUCT_OKX2VT: Dict[str, Product] = {
     "SPOT": Product.SPOT,   # spot
@@ -99,10 +98,10 @@ PRODUCT_OKX2VT: Dict[str, Product] = {
 }
 PRODUCT_VT2OKX: Dict[Product, str] = {v: k for k, v in PRODUCT_OKX2VT.items()}
 
-# symbol/instrument mapping.
+# # symbol/instrument mapping.
 symbol_contract_map: Dict[str, ContractData] = {}
-
-# local order set
+#
+# # local order set
 local_orderids: Set[str] = set()
 
 

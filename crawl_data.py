@@ -50,19 +50,19 @@ def get_binance_data(symbol: str, exchange: str, start_time: str, end_time: str)
         limit = BINANCE_SPOT_LIMIT
         save_symbol = symbol.lower()
         gateway = 'BINANCE_SPOT'
-        api_url = f'https://api.binance.com/api/v3/klines?symbol={symbol}&interval=1m&limit={limit}'
+        api_url = f'https://api.binance.us/api/v3/klines?symbol={symbol}&interval=1m&limit={limit}'
 
     elif exchange == 'usdt_future':
         print('usdt_future')
         limit = BINANCE_FUTURE_LIMIT
         gateway = "BINANCE_USDT"
-        api_url = f'https://fapi.binance.com/fapi/v1/klines?symbol={symbol}&interval=1m&limit={limit}'
+        api_url = f'https://fapi.binance.us/fapi/v1/klines?symbol={symbol}&interval=1m&limit={limit}'
 
     elif exchange == 'inverse_future':
         print("inverse_future")
         limit = BINANCE_FUTURE_LIMIT
         gateway = "BINANCE_INVERSE"
-        f'https://dapi.binance.com/dapi/v1/klines?symbol={symbol}&interval=1m&limit={limit}'
+        f'https://dapi.binance.us/dapi/v1/klines?symbol={symbol}&interval=1m&limit={limit}'
 
     else:
         raise Exception('the exchange name should be one of ：spot, usdt_future, inverse_future')
@@ -201,12 +201,12 @@ if __name__ == '__main__':
     
     set the proxy_host and proxy_port: if you can directly connect to the binance exchange, 
     then set the proxy_host to None and proxy_port to empty string ""
-    you can use the command ping api.binance.com to check whether your network works
+    you can use the command ping api.binance.us to check whether your network works
     
     @重要提示：
-    如果你的网络不能直连binance.com交易所，你需要设置proxy_host 和 proxy_port, 具体的设置看你代理的主机和端口。如果能直连的话，
+    如果你的网络不能直连binance.us交易所，你需要设置proxy_host 和 proxy_port, 具体的设置看你代理的主机和端口。如果能直连的话，
     就设置proxy_host = None, proxy_port = ""
-    你可以在终端运行输入命令看看自己的网络能否连接交易所： ping api.binance.com
+    你可以在终端运行输入命令看看自己的网络能否连接交易所： ping api.binance.us
     """
 
     # set your proxy_host
@@ -214,7 +214,7 @@ if __name__ == '__main__':
     proxy_host = "127.0.0.1"
 
     # set it to your proxy_port
-    # 设置你的代理端口号如: 1087, 没有你修改为0,但是要保证你能访问api.binance.com这个主机。
+    # 设置你的代理端口号如: 1087, 没有你修改为0,但是要保证你能访问api.binance.us这个主机。
     proxy_port = 1087
 
     proxies = None

@@ -91,7 +91,7 @@ class AtrRsiStrategy(CtaTemplate):
         am.update_bar(bar)
         if not am.inited:
             return
-
+        self.write_log(f"当前时间：{bar.datetime}，上一个15min周期价格：{am.close[-2]}")
         atr_array = am.atr(self.atr_length, array=True)
         self.atr_value = atr_array[-1]
         self.atr_ma = atr_array[-self.atr_ma_length:].mean()

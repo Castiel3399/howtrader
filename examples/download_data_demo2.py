@@ -2,13 +2,14 @@
 use the binance api to crawl data then save into the sqlite database.
 
 """
-
+import pandas
 import pandas as pd
 import time
 from datetime import datetime
 import requests
 import pytz
 from howtrader.trader.database import get_database, BaseDatabase
+import pandas as pd
 
 pd.set_option('expand_frame_repr', False)  #
 from howtrader.trader.object import BarData, Interval, Exchange
@@ -115,7 +116,10 @@ def get_binance_data(symbol: str, exchange: str, start_time: str, end_time: str)
                 )
                 buf.append(bar)
 
-            database.save_bar_data(buf)
+            #database.save_bar_data(buf)
+
+            pd = pandas.DataFrame(buf)
+            pd.to_pickle(f'{save_symbol}_{exchange}_{start_time}_{end_time}.pkl')
 
             # exit the loop, if close time is greater than the current time
             if (datas[-1][0] > end_time) or datas[-1][6] >= (int(time.time() * 1000) - 60 * 1000):
@@ -174,8 +178,8 @@ def download_future(symbol):
 
     """
 
-    t1 = Thread(target=get_binance_data, args=(symbol, 'usdt_future', "2020-1-1", "2020-6-1"))
-    t2 = Thread(target=get_binance_data, args=(symbol, 'usdt_future', "2020-6-1", "2020-12-1"))
+    t1 = Thread(target=get_binance_data, args=(symbol, 'usdt_future', "2016-1-1", "2018-6-1"))
+    t2 = Thread(target=get_binance_data, args=(symbol, 'usdt_future', "2018-6-1", "2020-12-1"))
     t3 = Thread(target=get_binance_data, args=(symbol, 'usdt_future', "2020-12-1", "2021-6-1"))
     t4 = Thread(target=get_binance_data, args=(symbol, 'usdt_future', "2021-6-1", "2021-12-1"))
     t5 = Thread(target=get_binance_data, args=(symbol, 'usdt_future', "2021-12-1", "2022-6-28"))
@@ -203,8 +207,8 @@ if __name__ == '__main__':
 
     # proxy_host , if you can directly connect to the binance exchange, then set it to None or empty string ""，如果没有你就设置为 None 或者空的字符串 "",
     # you can use the command  ping api.binance.com to check whether your network work well: 你可以在终端运行 ping api.binance.com 查看你的网络是否正常。
-    proxy_host = "127.0.0.1"  # set it to your proxy_host 如果没有就设置为"", 如果有就设置为你的代理主机如：127.0.0.1
-    proxy_port = 1087  # set it to your proxy_port  设置你的代理端口号如: 1087, 没有你修改为0,但是要保证你能访问api.binance.com这个主机。
+    proxy_host = ""  # set it to your proxy_host 如果没有就设置为"", 如果有就设置为你的代理主机如：127.0.0.1
+    proxy_port = 0  # set it to your proxy_port  设置你的代理端口号如: 1087, 没有你修改为0,但是要保证你能访问api.binance.com这个主机。
 
     proxies = None
     if proxy_host and proxy_port:
@@ -213,6 +217,6 @@ if __name__ == '__main__':
 
     download_future(symbol="BTCUSDT")  # crawl binance usdt_future data. 下载合约的数据
 
-    download_spot(symbol="BTCUSDT") # crawl binance spot data.
+    #download_spot(symbol="BTCUSDT") # crawl binance spot data.
 
 

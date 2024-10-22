@@ -52,11 +52,11 @@ from howtrader.api.websocket import WebsocketClient
 from howtrader.trader.constant import LOCAL_TZ
 from howtrader.trader.setting import SETTINGS
 # rest api host
-F_REST_HOST: str = "https://fapi.binance.com"
+F_REST_HOST: str = "https://fapi.binance.us"
 
 # ws api host
-F_WEBSOCKET_TRADE_HOST: str = "wss://fstream.binance.com/ws/"
-F_WEBSOCKET_DATA_HOST: str = "wss://fstream.binance.com/stream"
+F_WEBSOCKET_TRADE_HOST: str = "wss://fstream.binance.us/ws/"
+F_WEBSOCKET_DATA_HOST: str = "wss://fstream.binance.us/stream"
 
 
 # Order status map
